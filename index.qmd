@@ -1,11 +1,10 @@
 ---
 title: "Final Report"
 author: "Akshita Sure"
-date: "2025-08-27"
 from: markdown+emoji
 categories: [gsoc]
 ---
 
 ![](./logo.png){width=400 fig-align="center"}
 
-
+# Introduction
