@@ -3,12 +3,13 @@ project:
   output-dir: docs
 
 website:
-  title: "gsoc-25"
+  title: "GSoC'25 | NumFOCUS | NetworkX"
   navbar:
-    left:
-      - href: index.qmd
-        text: Home
+    right:
       - about.qmd
+      - icon: github
+        text: Github
+        href: https://github.com/akshitasure12
 
 format:
   html:

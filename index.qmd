@@ -1,7 +1,11 @@
 ---
-title: "gsoc-25"
+title: "Final Report"
+author: "Akshita Sure"
+date: "2025-08-27"
+from: markdown+emoji
+categories: [gsoc]
 ---
 
-This is a Quarto website.
+![](./logo.png){width=400 fig-align="center"}
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+
