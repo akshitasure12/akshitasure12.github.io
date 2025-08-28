@@ -35,7 +35,6 @@ The primary objective of the project was to implement seven embarrassingly paral
 | `weakly_connected.py`  | `number_weakly_connected_components`                                     |
 | `dag.py`               | `colliders`, `v_structures`                                              |
 
----
 ^1^ *A private parallel helper function that applies each internal prediction function used by the link prediction algorithms across multiple cores.*
 
 These algorithms gave me the opportunity to explore a variety of directions and challenges in parallel graph computation. In the process, I dug into several aspects of why certain algorithms exhibit significant speedups while others do not. For example, some algorithms scale well only on sparse graphs, while their performance gains diminish on denser graphs due to the cost of serializing graph data and distributing work to multiple processes. In other cases, the rate of speedup decreases as the number of nodes increases, since the overhead of chunking tasks, pickling/unpickling, and scheduling workers outweighs the benefits of parallel execution.
@@ -44,7 +43,7 @@ I also discovered implementation-specific constraints. For instance, returning g
 
 These explorations not only deepened my understanding of parallel execution trade-offs in graph algorithms but also helped shape a set of practical guidelines for when and how parallelization in nx-parallel provides the most benefit.
 
-## Improving the timing script (ref. )
+## Improving the timing script (ref. [PR#114](https://github.com/networkx/nx-parallel/pull/114))
 
 The earlier timing script sometimes produced inconsistent results. For instance, it occasionally showed speedup decreasing as the number of nodes increased, or even reported lower speedups when more cores were used—behaviors that contradict the expected trends in parallel performance.
 
@@ -57,10 +56,9 @@ The impact of this change can be seen below:
 ![](assets/static/clustering.png){width=100%} 
 
 **New heatmap**:
-
 ![](assets/static/clustering_new.png){width=100%}
 
-## Adding a `should_run` parameter (ref. )
+## Adding a `should_run` parameter (ref. [PR#123](https://github.com/networkx/nx-parallel/pull/123))
 
 To give more control over when the parallel backend is used, a `should_run` parameter was introduced. Every algorithm is wrapped with a `default_should_run` function that checks the runtime configuration and decides whether the backend should be activated. By default, the backend is triggered only when the number of jobs utilised is greater than one, since running in parallel on a single core would not yield any benefit.
 
@@ -68,7 +66,7 @@ Beyond this default, other policies have also been added to handle situations wh
 
 Depending on the situation, the appropriate `should_run` policy is selected and passed through the `should_run` parameter of the `_configure_if_nx_active` decorator. This design makes the backend more adaptable to different workloads and avoids wasting resources on scenarios where parallelism provides little or no benefit.
 
-## Switching the default config to NetworkX
+## Switching the default config to NetworkX (ref. [PR#122](https://github.com/networkx/nx-parallel/pull/122))
 
 Previously, nx-parallel relied on Joblib’s configuration, where the default setting (n_jobs=None) restricted execution to a single core unless explicitly changed by the user. This often required additional configuration steps before any parallel speedup could be observed. 
 
@@ -76,9 +74,9 @@ The defaults have now been switched to use NetworkX’s configuration system ins
 
 ## Implement mem-mapping
 
-To reduce the memory overhead of passing large graphs between processes, I introduced [memmapping](https://joblib.readthedocs.io/en/latest/parallel.html#working-with-numerical-data-in-shared-memory-memmapping:~:text=shared%20memory%20(memmapping)-,%C2%B6,-By%20default%20the). The adjacency matrix is first converted to a NumPy array and dumped to disk with Joblib which allows all processes to share the same underlying file segment instead of creating separate in-memory copies. This significantly improves efficiency when working with large graphs. I applied it in `is_reachable`, but it can be extended to other algorithms as needed.
+To reduce the memory overhead of passing large graphs between processes, I introduced [memmapping](https://joblib.readthedocs.io/en/latest/parallel.html#working-with-numerical-data-in-shared-memory-memmapping:~:text=shared%20memory%20(memmapping)-,%C2%B6,-By%20default%20the). The adjacency matrix is first converted to a NumPy array and dumped to disk with Joblib which allows all processes to share the same underlying file segment instead of creating separate in-memory copies. This significantly improves efficiency when working with large graphs. I applied it in `is_reachable` (ref. [PR#119](https://github.com/networkx/nx-parallel/pull/119)), but it can be extended to other algorithms as needed.
 
-## Adding setup functions to benchmarks
+## Adding setup functions to benchmarks (ref. [PR#126](https://github.com/networkx/nx-parallel/pull/126))
 
 Introduced a `setup` function in each benchmark class to handle graph creation and other external computations before timing the algorithm.
 
@@ -122,4 +120,7 @@ Introduced a `setup` function in each benchmark class to handle graph creation a
 | Incorrect passing of `num_in_chunk` as `n_jobs` in `chunks()` | [PR#110](https://github.com/networkx/nx-parallel/issues/110) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | set `n_jobs=-1` as default | [PR#111](https://github.com/networkx/nx-parallel/issues/111) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | set `should_run=False` unless `nodes` is `None` | [PR#110](https://github.com/networkx/nx-parallel/issues/137) | ![](assets/static/open.png){width=100 fig-align="center"} |
+
+# Learnings and Challenges
+
 

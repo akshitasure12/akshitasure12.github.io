@@ -120,17 +120,18 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#work-done" id="toc-work-done" class="nav-link" data-scroll-target="#work-done">Work done</a>
   <ul class="collapse">
   <li><a href="#adding-embarassingly-parallel-algorithms" id="toc-adding-embarassingly-parallel-algorithms" class="nav-link" data-scroll-target="#adding-embarassingly-parallel-algorithms">Adding Embarassingly parallel algorithms</a></li>
-  <li><a href="#improving-the-timing-script-ref." id="toc-improving-the-timing-script-ref." class="nav-link" data-scroll-target="#improving-the-timing-script-ref.">Improving the timing script (ref. )</a></li>
-  <li><a href="#adding-a-should_run-parameter-ref." id="toc-adding-a-should_run-parameter-ref." class="nav-link" data-scroll-target="#adding-a-should_run-parameter-ref.">Adding a <code>should_run</code> parameter (ref. )</a></li>
-  <li><a href="#switching-the-default-config-to-networkx" id="toc-switching-the-default-config-to-networkx" class="nav-link" data-scroll-target="#switching-the-default-config-to-networkx">Switching the default config to NetworkX</a></li>
+  <li><a href="#improving-the-timing-script-ref.-pr114" id="toc-improving-the-timing-script-ref.-pr114" class="nav-link" data-scroll-target="#improving-the-timing-script-ref.-pr114">Improving the timing script (ref. PR#114)</a></li>
+  <li><a href="#adding-a-should_run-parameter-ref.-pr123" id="toc-adding-a-should_run-parameter-ref.-pr123" class="nav-link" data-scroll-target="#adding-a-should_run-parameter-ref.-pr123">Adding a <code>should_run</code> parameter (ref. PR#123)</a></li>
+  <li><a href="#switching-the-default-config-to-networkx-ref.-pr122" id="toc-switching-the-default-config-to-networkx-ref.-pr122" class="nav-link" data-scroll-target="#switching-the-default-config-to-networkx-ref.-pr122">Switching the default config to NetworkX (ref. PR#122)</a></li>
   <li><a href="#implement-mem-mapping" id="toc-implement-mem-mapping" class="nav-link" data-scroll-target="#implement-mem-mapping">Implement mem-mapping</a></li>
-  <li><a href="#adding-setup-functions-to-benchmarks" id="toc-adding-setup-functions-to-benchmarks" class="nav-link" data-scroll-target="#adding-setup-functions-to-benchmarks">Adding setup functions to benchmarks</a></li>
+  <li><a href="#adding-setup-functions-to-benchmarks-ref.-pr126" id="toc-adding-setup-functions-to-benchmarks-ref.-pr126" class="nav-link" data-scroll-target="#adding-setup-functions-to-benchmarks-ref.-pr126">Adding setup functions to benchmarks (ref. PR#126)</a></li>
   </ul></li>
   <li><a href="#links-to-work-done" id="toc-links-to-work-done" class="nav-link" data-scroll-target="#links-to-work-done">Links to work done</a>
   <ul class="collapse">
   <li><a href="#prs-opened" id="toc-prs-opened" class="nav-link" data-scroll-target="#prs-opened">PRs opened</a></li>
   <li><a href="#issues-raised" id="toc-issues-raised" class="nav-link" data-scroll-target="#issues-raised">Issues Raised</a></li>
   </ul></li>
+  <li><a href="#learnings-and-challenges" id="toc-learnings-and-challenges" class="nav-link" data-scroll-target="#learnings-and-challenges">Learnings and Challenges</a></li>
   </ul>
 </nav>
     </div>
@@ -234,39 +235,37 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<hr>
 <p><sup>1</sup> <em>A private parallel helper function that applies each internal prediction function used by the link prediction algorithms across multiple cores.</em></p>
 <p>These algorithms gave me the opportunity to explore a variety of directions and challenges in parallel graph computation. In the process, I dug into several aspects of why certain algorithms exhibit significant speedups while others do not. For example, some algorithms scale well only on sparse graphs, while their performance gains diminish on denser graphs due to the cost of serializing graph data and distributing work to multiple processes. In other cases, the rate of speedup decreases as the number of nodes increases, since the overhead of chunking tasks, pickling/unpickling, and scheduling workers outweighs the benefits of parallel execution.</p>
 <p>I also discovered implementation-specific constraints. For instance, returning generators inside the per-chunk function caused issues, as they cannot be pickled for process communication with worker processes. Similarly, tuning parameters such as <code>max_chunk_size</code> proved important—smaller chunks worked better for certain algorithms where fine-grained load balancing mattered, while larger chunks were more efficient for others by reducing scheduling overhead.</p>
 <p>These explorations not only deepened my understanding of parallel execution trade-offs in graph algorithms but also helped shape a set of practical guidelines for when and how parallelization in nx-parallel provides the most benefit.</p>
 </section>
-<section id="improving-the-timing-script-ref." class="level2">
-<h2 class="anchored" data-anchor-id="improving-the-timing-script-ref.">Improving the timing script (ref. )</h2>
+<section id="improving-the-timing-script-ref.-pr114" class="level2">
+<h2 class="anchored" data-anchor-id="improving-the-timing-script-ref.-pr114">Improving the timing script (ref. <a href="https://github.com/networkx/nx-parallel/pull/114">PR#114</a>)</h2>
 <p>The earlier timing script sometimes produced inconsistent results. For instance, it occasionally showed speedup decreasing as the number of nodes increased, or even reported lower speedups when more cores were used—behaviors that contradict the expected trends in parallel performance.</p>
 <p>To resolve this, I implemented a new timing script based on the timeit module. Each measurement is repeated several times, and the minimum runtime is recorded to reduce the impact of system noise. This produces results that are more stable and more representative of the true execution time.</p>
 <p>The impact of this change can be seen below:</p>
 <p><strong>Old heatmap</strong>:</p>
 <p><img src="assets/static/clustering.png" class="img-fluid" style="width:100.0%"></p>
-<p><strong>New heatmap</strong>:</p>
-<p><img src="assets/static/clustering_new.png" class="img-fluid" style="width:100.0%"></p>
+<p><strong>New heatmap</strong>: <img src="assets/static/clustering_new.png" class="img-fluid" style="width:100.0%"></p>
 </section>
-<section id="adding-a-should_run-parameter-ref." class="level2">
-<h2 class="anchored" data-anchor-id="adding-a-should_run-parameter-ref.">Adding a <code>should_run</code> parameter (ref. )</h2>
+<section id="adding-a-should_run-parameter-ref.-pr123" class="level2">
+<h2 class="anchored" data-anchor-id="adding-a-should_run-parameter-ref.-pr123">Adding a <code>should_run</code> parameter (ref. <a href="https://github.com/networkx/nx-parallel/pull/123">PR#123</a>)</h2>
 <p>To give more control over when the parallel backend is used, a <code>should_run</code> parameter was introduced. Every algorithm is wrapped with a <code>default_should_run</code> function that checks the runtime configuration and decides whether the backend should be activated. By default, the backend is triggered only when the number of jobs utilised is greater than one, since running in parallel on a single core would not yield any benefit.</p>
 <p>Beyond this default, other policies have also been added to handle situations where parallel execution may not be advantageous. For instance, if the measured speedup is consistently below one, the backend can be skipped in favor of the sequential version. Similarly, when the input graph is very small, the overhead may outweigh any gains, so the algorithm is forced to run sequentially or when the graph is too dense to benefit from parallel processing.</p>
 <p>Depending on the situation, the appropriate <code>should_run</code> policy is selected and passed through the <code>should_run</code> parameter of the <code>_configure_if_nx_active</code> decorator. This design makes the backend more adaptable to different workloads and avoids wasting resources on scenarios where parallelism provides little or no benefit.</p>
 </section>
-<section id="switching-the-default-config-to-networkx" class="level2">
-<h2 class="anchored" data-anchor-id="switching-the-default-config-to-networkx">Switching the default config to NetworkX</h2>
+<section id="switching-the-default-config-to-networkx-ref.-pr122" class="level2">
+<h2 class="anchored" data-anchor-id="switching-the-default-config-to-networkx-ref.-pr122">Switching the default config to NetworkX (ref. <a href="https://github.com/networkx/nx-parallel/pull/122">PR#122</a>)</h2>
 <p>Previously, nx-parallel relied on Joblib’s configuration, where the default setting (n_jobs=None) restricted execution to a single core unless explicitly changed by the user. This often required additional configuration steps before any parallel speedup could be observed.</p>
 <p>The defaults have now been switched to use NetworkX’s configuration system instead. As part of this change, n_jobs is set to -1 by default, instructing Joblib to use all available cores automatically. This allows users to benefit from parallel execution out of the box, without needing to modify configuration settings. The documentation has been updated to reflect this change and ensure consistency with the new configuration system. Advanced users still retain the ability to override the defaults if they require finer control.</p>
 </section>
 <section id="implement-mem-mapping" class="level2">
 <h2 class="anchored" data-anchor-id="implement-mem-mapping">Implement mem-mapping</h2>
-<p>To reduce the memory overhead of passing large graphs between processes, I introduced <a href="https://joblib.readthedocs.io/en/latest/parallel.html#working-with-numerical-data-in-shared-memory-memmapping:~:text=shared%20memory%20(memmapping)-,%C2%B6,-By%20default%20the">memmapping</a>. The adjacency matrix is first converted to a NumPy array and dumped to disk with Joblib which allows all processes to share the same underlying file segment instead of creating separate in-memory copies. This significantly improves efficiency when working with large graphs. I applied it in <code>is_reachable</code>, but it can be extended to other algorithms as needed.</p>
+<p>To reduce the memory overhead of passing large graphs between processes, I introduced <a href="https://joblib.readthedocs.io/en/latest/parallel.html#working-with-numerical-data-in-shared-memory-memmapping:~:text=shared%20memory%20(memmapping)-,%C2%B6,-By%20default%20the">memmapping</a>. The adjacency matrix is first converted to a NumPy array and dumped to disk with Joblib which allows all processes to share the same underlying file segment instead of creating separate in-memory copies. This significantly improves efficiency when working with large graphs. I applied it in <code>is_reachable</code> (ref. <a href="https://github.com/networkx/nx-parallel/pull/119">PR#119</a>), but it can be extended to other algorithms as needed.</p>
 </section>
-<section id="adding-setup-functions-to-benchmarks" class="level2">
-<h2 class="anchored" data-anchor-id="adding-setup-functions-to-benchmarks">Adding setup functions to benchmarks</h2>
+<section id="adding-setup-functions-to-benchmarks-ref.-pr126" class="level2">
+<h2 class="anchored" data-anchor-id="adding-setup-functions-to-benchmarks-ref.-pr126">Adding setup functions to benchmarks (ref. <a href="https://github.com/networkx/nx-parallel/pull/126">PR#126</a>)</h2>
 <p>Introduced a <code>setup</code> function in each benchmark class to handle graph creation and other external computations before timing the algorithm.</p>
 </section>
 </section>
@@ -444,9 +443,12 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-
-
 </section>
+</section>
+<section id="learnings-and-challenges" class="level1">
+<h1>Learnings and Challenges</h1>
+
+
 </section>
 
 </main> <!-- /main -->
