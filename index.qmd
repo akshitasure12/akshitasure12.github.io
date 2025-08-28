@@ -53,8 +53,7 @@ The nx-parallel package is a backend for NetworkX designed to accelerate graph a
 
 | Issue Description                                                          | Link                                                         | Status|
 | :--------------------------------------------------------------------------| :----------------------------------------------------------: | ----: |
-
-| BUG: get_all_functions() is not returning args and kwargs of the functions | [PR#94](https://github.com/networkx/nx-parallel/issues/94) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| `get_all_functions()` is not returning args and kwargs of the functions | [PR#94](https://github.com/networkx/nx-parallel/issues/94) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | Incorrect passing of `num_in_chunk` as `n_jobs` in `chunks()` | [PR#110](https://github.com/networkx/nx-parallel/issues/110) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | set `n_jobs=-1` as default | [PR#111](https://github.com/networkx/nx-parallel/issues/111) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | set `should_run=False` unless `nodes` is `None` | [PR#110](https://github.com/networkx/nx-parallel/issues/137) | ![](assets/static/open.png){width=100 fig-align="center"} |

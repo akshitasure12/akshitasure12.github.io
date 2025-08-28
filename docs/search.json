@@ -11,6 +11,6 @@
     "href": "index.html#issues-raised",
     "title": "Final Report",
     "section": "Issues Raised",
-    "text": "Issues Raised\n\n\n\n\n\n\n\n\nIssue Description\nLink\nStatus\n\n\n\n\n\nBUG: get_all_functions() is not returning args and kwargs of the functions | PR#94 |  |\nIncorrect passing of num_in_chunk as n_jobs in chunks() | PR#110 |  |\nset n_jobs=-1 as default | PR#111 |  |\nset should_run=False unless nodes is None | PR#110 |  |"
+    "text": "Issues Raised\n\n\n\nIssue Description\nLink\nStatus\n\n\n\n\nget_all_functions() is not returning args and kwargs of the functions\nPR#94\n\n\n\nIncorrect passing of num_in_chunk as n_jobs in chunks()\nPR#110\n\n\n\nset n_jobs=-1 as default\nPR#111\n\n\n\nset should_run=False unless nodes is None\nPR#110"
   }
 ]
