@@ -82,6 +82,8 @@ Introduced a `setup` function in each benchmark class to handle graph creation a
 
 # Links to work done
 
+My blogs: [Biweekly blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs)
+
 ## PRs opened
 
 | PR Description                             | Link                                                         | Status|
@@ -122,5 +124,27 @@ Introduced a `setup` function in each benchmark class to handle graph creation a
 | set `should_run=False` unless `nodes` is `None` | [PR#110](https://github.com/networkx/nx-parallel/issues/137) | ![](assets/static/open.png){width=100 fig-align="center"} |
 
 # Learnings and Challenges
+
+Looking back, I can see just how far I’ve come over the course of my GSoC journey. One of the biggest lessons I’ve learned is the true value of documentation—not just as a formality, but as a way to communicate ideas clearly and leave a trail of insights for others (and even for myself in the future). I’ve developed the habit of recording my findings as I go, and over time I’ve become more mindful of keeping things concise, relevant, and easy to follow.
+
+This experience also made me more curious by nature-- I now find myself constantly wondering why something works the way it does and digging deeper to understand it better. Along with that curiosity, I learned the importance of asking questions and not being afraid to seek clarification from mentors. Collaborating in an open-source setting also taught me how valuable community discussions are; they not only improved code quality but also broadened my perspective on different approaches to solving a particular problem.
+
+I also learned the importance of testing and benchmarking-- identifying bottlenecks, and validating improvements in a systematic manner. Through this, I gained a stronger appreciation for writing maintainable code that others can build on, not just code that “works.”
+
+One of the main challenges I faced was maintaining a balance between staying focused on the defined tasks and resisting the temptation to dive too deeply into side explorations. It’s easy to get carried away chasing interesting rabbit holes, but I had to remind myself to stay grounded in the project’s goals while still leaving room for curiosity and experimentation. Finding that balance wasn’t always easy, but it taught me a lot about prioritization.
+
+# Conclusion
+
+The GSoC 2025 experience has truly been one of a kind. It has shaped me into a more well-rounded developer, going far beyond just “writing code.” I learned the importance of documentation, testing, benchmarking, collaboration, and community-driven development-- all of which are just as vital as code itself. In many ways, I feel I’ve experienced exactly what GSoC is intended to inspire: a genuine love for contributing to open source and a deeper appreciation for the impact of collective effort.
+
+When I look back at my original proposal, my plan was to implement 7 parallel graph algorithms. By the end of the summer, however, not only did I added those many algorithms but also worked across many other aspects of the project. This growth was possible because I became increasingly comfortable with the codebase, and with that came the confidence to explore, experiment, and contribute in new directions.
+
+Looking ahead, I plan to continue being an active part of the NetworkX and nx-parallel communities. I want to keep fixing bugs, improving features, and helping with new ideas that push the project forward. More importantly, I look forward to continuing the habit of learning, sharing knowledge, and contributing back to open source-- because this journey has shown me that the real reward lies in building together.
+
+# Achnowledgements
+
+I would like to sincerely thank my mentors, Dan Schult and Aditi Juneja, for their invaluable guidance and support throughout my GSoC journey. Their thoughtful reviews not only helped me refine my work but also encouraged me to pay attention to the smallest details. The mid-term review was especially insightful, as it helped me recognize my strengths while also highlighting areas for growth—motivating me to continually improve.
+
+I am deeply grateful for their time, patience, and encouragement. I would also like to thank Google Summer of Code for giving me the opportunity to contribute to such an inspiring open-source community and to learn in such a collaborative environment.
 
 

@@ -1,6 +1,6 @@
 ---
 title: "Akshita Sure"
-image: "profile.jpeg"
+image: "assets/static/profile.jpeg"
 about:
   template: jolla
   links:
