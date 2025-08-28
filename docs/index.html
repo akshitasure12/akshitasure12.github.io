@@ -117,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
   <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
-  <li><a href="#work-done" id="toc-work-done" class="nav-link" data-scroll-target="#work-done">Work done</a>
+  <li><a href="#contributions" id="toc-contributions" class="nav-link" data-scroll-target="#contributions">Contributions</a>
   <ul class="collapse">
   <li><a href="#adding-embarassingly-parallel-algorithms" id="toc-adding-embarassingly-parallel-algorithms" class="nav-link" data-scroll-target="#adding-embarassingly-parallel-algorithms">Adding Embarassingly parallel algorithms</a></li>
   <li><a href="#improving-the-timing-script-ref.-pr114" id="toc-improving-the-timing-script-ref.-pr114" class="nav-link" data-scroll-target="#improving-the-timing-script-ref.-pr114">Improving the timing script (ref. PR#114)</a></li>
@@ -126,12 +126,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#implement-mem-mapping" id="toc-implement-mem-mapping" class="nav-link" data-scroll-target="#implement-mem-mapping">Implement mem-mapping</a></li>
   <li><a href="#adding-setup-functions-to-benchmarks-ref.-pr126" id="toc-adding-setup-functions-to-benchmarks-ref.-pr126" class="nav-link" data-scroll-target="#adding-setup-functions-to-benchmarks-ref.-pr126">Adding setup functions to benchmarks (ref. PR#126)</a></li>
   </ul></li>
-  <li><a href="#links-to-work-done" id="toc-links-to-work-done" class="nav-link" data-scroll-target="#links-to-work-done">Links to work done</a>
+  <li><a href="#work-links" id="toc-work-links" class="nav-link" data-scroll-target="#work-links">Work links</a>
   <ul class="collapse">
   <li><a href="#prs-opened" id="toc-prs-opened" class="nav-link" data-scroll-target="#prs-opened">PRs opened</a></li>
   <li><a href="#issues-raised" id="toc-issues-raised" class="nav-link" data-scroll-target="#issues-raised">Issues Raised</a></li>
   </ul></li>
-  <li><a href="#learnings-and-challenges" id="toc-learnings-and-challenges" class="nav-link" data-scroll-target="#learnings-and-challenges">Learnings and Challenges</a></li>
+  <li><a href="#key-learnings-and-challenges" id="toc-key-learnings-and-challenges" class="nav-link" data-scroll-target="#key-learnings-and-challenges">Key Learnings and Challenges</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#achnowledgements" id="toc-achnowledgements" class="nav-link" data-scroll-target="#achnowledgements">Achnowledgements</a></li>
   </ul>
@@ -182,8 +182,8 @@ ul.task-list li input[type="checkbox"] {
 <h1>Background</h1>
 <p>The nx-parallel package is a backend for NetworkX designed to accelerate graph algorithms through parallel computing with joblib. Prior to the coding phase, I contributed by fixing a few utility functions, such as correcting the faulty <code>chunks()</code> function (which previously led to incorrect results due to improper passing of parameters) and refactoring <code>get_all_functions()</code>. I also proposed setting NetworkX’s default configuration to use all available cores instead of <code>None</code></p>
 </section>
-<section id="work-done" class="level1">
-<h1>Work done</h1>
+<section id="contributions" class="level1">
+<h1>Contributions</h1>
 <section id="adding-embarassingly-parallel-algorithms" class="level2">
 <h2 class="anchored" data-anchor-id="adding-embarassingly-parallel-algorithms">Adding Embarassingly parallel algorithms</h2>
 <p>The primary objective of the project was to implement seven embarrassingly parallel algorithms. By the end of the coding phase, around nineteen such graph algorithms were added to nx-parallel:</p>
@@ -271,8 +271,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Introduced a <code>setup</code> function in each benchmark class to handle graph creation and other external computations before timing the algorithm.</p>
 </section>
 </section>
-<section id="links-to-work-done" class="level1">
-<h1>Links to work done</h1>
+<section id="work-links" class="level1">
+<h1>Work links</h1>
 <p>My blogs: <a href="https://github.com/akshitasure12/networkx-blogs/tree/main/blogs">Biweekly blogs</a></p>
 <section id="prs-opened" class="level2">
 <h2 class="anchored" data-anchor-id="prs-opened">PRs opened</h2>
@@ -448,8 +448,8 @@ ul.task-list li input[type="checkbox"] {
 </table>
 </section>
 </section>
-<section id="learnings-and-challenges" class="level1">
-<h1>Learnings and Challenges</h1>
+<section id="key-learnings-and-challenges" class="level1">
+<h1>Key Learnings and Challenges</h1>
 <p>Looking back, I can see just how far I’ve come over the course of my GSoC journey. One of the biggest lessons I’ve learned is the true value of documentation—not just as a formality, but as a way to communicate ideas clearly and leave a trail of insights for others (and even for myself in the future). I’ve developed the habit of recording my findings as I go, and over time I’ve become more mindful of keeping things concise, relevant, and easy to follow.</p>
 <p>This experience also made me more curious by nature– I now find myself constantly wondering why something works the way it does and digging deeper to understand it better. Along with that curiosity, I learned the importance of asking questions and not being afraid to seek clarification from mentors. Collaborating in an open-source setting also taught me how valuable community discussions are; they not only improved code quality but also broadened my perspective on different approaches to solving a particular problem.</p>
 <p>I also learned the importance of testing and benchmarking– identifying bottlenecks, and validating improvements in a systematic manner. Through this, I gained a stronger appreciation for writing maintainable code that others can build on, not just code that “works.”</p>
