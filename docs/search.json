@@ -1,5 +1,47 @@
 [
   {
+    "objectID": "index.html#adding-embarassingly-parallel-algorithms",
+    "href": "index.html#adding-embarassingly-parallel-algorithms",
+    "title": "Final Report",
+    "section": "Adding Embarassingly parallel algorithms",
+    "text": "Adding Embarassingly parallel algorithms\nThe primary objective of the project was to implement seven embarrassingly parallel algorithms. By the end of the coding phase, around nineteen such graph algorithms were added to nx-parallel:\n\n\n\n\n\n\n\nFile\nFunctions\n\n\n\n\ncluster.py\ntriangles, clustering, average_clustering\n\n\nlink_prediction.py\napply_prediction1, jaccard_coefficient, resource_allocation_index, adamic_adar_index, preferential_attachment, common_neighbor_centrality, cn_soundarajan_hopcroft, ra_index_soundarajan_hopcroft, within_inter_cluster\n\n\nharmonic.py\nharmonic_centrality\n\n\nneighbor_degree.py\naverage_neighbor_degree\n\n\nattracting.py\nnumber_attracting_components\n\n\nconnected.py\nnumber_connected_components\n\n\nstrongly_connected.py\nnumber_strongly_connected_components\n\n\nweakly_connected.py\nnumber_weakly_connected_components\n\n\ndag.py\ncolliders, v_structures\n\n\n\n\n1 A private parallel helper function that applies each internal prediction function used by the link prediction algorithms across multiple cores.\nThese algorithms gave me the opportunity to explore a variety of directions and challenges in parallel graph computation. In the process, I dug into several aspects of why certain algorithms exhibit significant speedups while others do not. For example, some algorithms scale well only on sparse graphs, while their performance gains diminish on denser graphs due to the cost of serializing graph data and distributing work to multiple processes. In other cases, the rate of speedup decreases as the number of nodes increases, since the overhead of chunking tasks, pickling/unpickling, and scheduling workers outweighs the benefits of parallel execution.\nI also discovered implementation-specific constraints. For instance, returning generators inside the per-chunk function caused issues, as they cannot be pickled for process communication with worker processes. Similarly, tuning parameters such as max_chunk_size proved important—smaller chunks worked better for certain algorithms where fine-grained load balancing mattered, while larger chunks were more efficient for others by reducing scheduling overhead.\nThese explorations not only deepened my understanding of parallel execution trade-offs in graph algorithms but also helped shape a set of practical guidelines for when and how parallelization in nx-parallel provides the most benefit."
+  },
+  {
+    "objectID": "index.html#improving-the-timing-script-ref.",
+    "href": "index.html#improving-the-timing-script-ref.",
+    "title": "Final Report",
+    "section": "Improving the timing script (ref. )",
+    "text": "Improving the timing script (ref. )\nThe earlier timing script sometimes produced inconsistent results. For instance, it occasionally showed speedup decreasing as the number of nodes increased, or even reported lower speedups when more cores were used—behaviors that contradict the expected trends in parallel performance.\nTo resolve this, I implemented a new timing script based on the timeit module. Each measurement is repeated several times, and the minimum runtime is recorded to reduce the impact of system noise. This produces results that are more stable and more representative of the true execution time.\nThe impact of this change can be seen below:\nOld heatmap:\n\nNew heatmap:"
+  },
+  {
+    "objectID": "index.html#adding-a-should_run-parameter-ref.",
+    "href": "index.html#adding-a-should_run-parameter-ref.",
+    "title": "Final Report",
+    "section": "Adding a should_run parameter (ref. )",
+    "text": "Adding a should_run parameter (ref. )\nTo give more control over when the parallel backend is used, a should_run parameter was introduced. Every algorithm is wrapped with a default_should_run function that checks the runtime configuration and decides whether the backend should be activated. By default, the backend is triggered only when the number of jobs utilised is greater than one, since running in parallel on a single core would not yield any benefit.\nBeyond this default, other policies have also been added to handle situations where parallel execution may not be advantageous. For instance, if the measured speedup is consistently below one, the backend can be skipped in favor of the sequential version. Similarly, when the input graph is very small, the overhead may outweigh any gains, so the algorithm is forced to run sequentially or when the graph is too dense to benefit from parallel processing.\nDepending on the situation, the appropriate should_run policy is selected and passed through the should_run parameter of the _configure_if_nx_active decorator. This design makes the backend more adaptable to different workloads and avoids wasting resources on scenarios where parallelism provides little or no benefit."
+  },
+  {
+    "objectID": "index.html#switching-the-default-config-to-networkx",
+    "href": "index.html#switching-the-default-config-to-networkx",
+    "title": "Final Report",
+    "section": "Switching the default config to NetworkX",
+    "text": "Switching the default config to NetworkX\nPreviously, nx-parallel relied on Joblib’s configuration, where the default setting (n_jobs=None) restricted execution to a single core unless explicitly changed by the user. This often required additional configuration steps before any parallel speedup could be observed.\nThe defaults have now been switched to use NetworkX’s configuration system instead. As part of this change, n_jobs is set to -1 by default, instructing Joblib to use all available cores automatically. This allows users to benefit from parallel execution out of the box, without needing to modify configuration settings. The documentation has been updated to reflect this change and ensure consistency with the new configuration system. Advanced users still retain the ability to override the defaults if they require finer control."
+  },
+  {
+    "objectID": "index.html#implement-mem-mapping",
+    "href": "index.html#implement-mem-mapping",
+    "title": "Final Report",
+    "section": "Implement mem-mapping",
+    "text": "Implement mem-mapping\nTo reduce the memory overhead of passing large graphs between processes, I introduced memmapping. The adjacency matrix is first converted to a NumPy array and dumped to disk with Joblib which allows all processes to share the same underlying file segment instead of creating separate in-memory copies. This significantly improves efficiency when working with large graphs. I applied it in is_reachable, but it can be extended to other algorithms as needed."
+  },
+  {
+    "objectID": "index.html#adding-setup-functions-to-benchmarks",
+    "href": "index.html#adding-setup-functions-to-benchmarks",
+    "title": "Final Report",
+    "section": "Adding setup functions to benchmarks",
+    "text": "Adding setup functions to benchmarks\nIntroduced a setup function in each benchmark class to handle graph creation and other external computations before timing the algorithm."
+  },
+  {
     "objectID": "index.html#prs-opened",
     "href": "index.html#prs-opened",
     "title": "Final Report",
