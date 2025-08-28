@@ -17,7 +17,7 @@ I hope to make sure that this report along with my published [blogs](https://git
 
 The nx-parallel package is a backend for NetworkX designed to accelerate graph algorithms through parallel computing with joblib. Prior to the coding phase, I contributed by fixing a few utility functions, such as correcting the faulty `chunks()` function (which previously led to incorrect results due to improper passing of parameters) and refactoring `get_all_functions()`. I also proposed setting NetworkX’s default configuration to use all available cores instead of `None`
 
-# Work done
+# Contributions
 
 ## Adding Embarassingly parallel algorithms
 
@@ -80,7 +80,7 @@ To reduce the memory overhead of passing large graphs between processes, I intro
 
 Introduced a `setup` function in each benchmark class to handle graph creation and other external computations before timing the algorithm.
 
-# Links to work done
+# Work links
 
 My blogs: [Biweekly blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs)
 
@@ -123,7 +123,7 @@ My blogs: [Biweekly blogs](https://github.com/akshitasure12/networkx-blogs/tree/
 | set `n_jobs=-1` as default | [PR#111](https://github.com/networkx/nx-parallel/issues/111) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | set `should_run=False` unless `nodes` is `None` | [PR#110](https://github.com/networkx/nx-parallel/issues/137) | ![](assets/static/open.png){width=100 fig-align="center"} |
 
-# Learnings and Challenges
+# Key Learnings and Challenges
 
 Looking back, I can see just how far I’ve come over the course of my GSoC journey. One of the biggest lessons I’ve learned is the true value of documentation—not just as a formality, but as a way to communicate ideas clearly and leave a trail of insights for others (and even for myself in the future). I’ve developed the habit of recording my findings as I go, and over time I’ve become more mindful of keeping things concise, relevant, and easy to follow.
 
