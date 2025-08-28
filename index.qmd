@@ -5,6 +5,56 @@ from: markdown+emoji
 categories: [gsoc]
 ---
 
-![](./logo.png){width=400 fig-align="center"}
+![](assets/static/logo.png){width=400 fig-align="center"}
 
-# Introduction
+# Abstract
+
+This final report contains details of all of the work done during the Google Summer of Code, 2025, with respect to the nx-parallel project, a parallel backend for NetworkX that leverages joblib for running graph algorithms in parallel. I worked on switching the default Networkx configuration to use all of available cores instead of None which involved heavy documentation changes throughout. I added a timing script that utilises the `timeit` module and worked on nullifying the noise in the timings obtained. I refined the ASV benchmarks to use setup functions without including the graph creation and conversion timings. I added the `should_run` functionality which helps in determining whether a backend should run a particular algorithm. Coming to the main goal of the project, I added around 19 new embarassingly parallel algorithms to the codebase. I also revisited previously added algorithms and enhanced their performance.
+
+I hope to make sure that this report along with my published [blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs) hope to serve as a key resource to help in contributions etcs.
+
+# Background
+
+The nx-parallel package is a backend for NetworkX designed to accelerate graph algorithms through parallel computing with joblib. Prior to the coding phase, I contributed by fixing a few utility functions, such as correcting the faulty `chunks()` function (which previously led to incorrect results due to improper passing of parameters) and refactoring `get_all_functions()`. I also proposed setting NetworkX’s default configuration to use all available cores instead of `None`
+
+# PRs and status
+
+## PRs opened
+
+| PR Description                             | Link                                                         | Status|
+| :------------------------------------------| :----------------------------------------------------------: | ----: |
+| parallel implementation of `triangles` | [PR#106](https://github.com/networkx/nx-parallel/pull/106) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| adding a custom marker to avoid `pytest.mark.order` warning | [PR#107](https://github.com/networkx/nx-parallel/pull/107) | ![](assets/static/closed.png){width=100 fig-align="center"} |
+| refactor `chunks()` to correctly use `n_jobs` |  [PR#112](https://github.com/networkx/nx-parallel/pull/112)  | ![](assets/static/merged.png){width=100 fig-align="center"}|
+| improve the timing script   |  [PR#114](https://github.com/networkx/nx-parallel/pull/114)   | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| parallel implementation of `number_` algorithms|  [PR#117](https://github.com/networkx/nx-parallel/pull/117)  | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| modify `is_reachable()` to use mem-mapping approach | [PR#119](https://github.com/networkx/nx-parallel/pull/119)|![](assets/static/merged.png){width=100 fig-align="center"} |
+| optimise `is_reachable()` in NetworkX | [PR#8112](https://github.com/networkx/networkx/pull/8112) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| remove test order dependency via context managers| [PR#120](https://github.com/networkx/nx-parallel/pull/120) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| make `n_jobs=-1` as defualt | [PR#122](https://github.com/networkx/nx-parallel/pull/122) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| add `should_run` functionality | [PR#123](https://github.com/networkx/nx-parallel/pull/123) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| parallel implementation of `harmonic_centrality` | [PR#124](https://github.com/networkx/nx-parallel/pull/124) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| optimise harmonic centrality | [PR#8158](https://github.com/networkx/networkx/pull/8158) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| refactor ASV benchmarks with setup functions | [PR#126](https://github.com/networkx/nx-parallel/pull/126) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| parallel implementation of `link_prediction` algorithms | [PR#127](https://github.com/networkx/nx-parallel/pull/127) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| refactor `test_get_functions_with_get_chunks` | [PR#128](https://github.com/networkx/nx-parallel/pull/128) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| update `test_get_chunks` for new algorithms | [PR#129](https://github.com/networkx/nx-parallel/pull/129) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| parallel implementation of `clustering` and `average_clustering` | [PR#130](https://github.com/networkx/nx-parallel/pull/130) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| uses `pytest.raises` as context | [PR#8170](https://github.com/networkx/networkx/pull/8170) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| parallel implementation of `average_neighbor_degree` | [PR#132](https://github.com/networkx/nx-parallel/pull/132) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| move `assign_algorithms` outside `BackendInterface` class | [PR#133](https://github.com/networkx/nx-parallel/pull/133) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| parallel implementation of `v_structures` and `colliders` | [PR#134](https://github.com/networkx/nx-parallel/pull/134) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| simplify node selection using `nbunch_iter()` | [PR#135](https://github.com/networkx/nx-parallel/pull/135) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| post merge refinement | [PR#138](https://github.com/networkx/nx-parallel/pull/138) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| add `should_run` for when `nodes=None` | [PR#141](https://github.com/networkx/nx-parallel/pull/141) | ![](assets/static/open.png){width=100 fig-align="center"} |
+| clean up | [PR#142](https://github.com/networkx/nx-parallel/pull/142) | ![](assets/static/open.png){width=100 fig-align="center"} |
+
+## Issues Raised
+
+| Issue Description                                                          | Link                                                         | Status|
+| :--------------------------------------------------------------------------| :----------------------------------------------------------: | ----: |
+
+| BUG: get_all_functions() is not returning args and kwargs of the functions | [PR#94](https://github.com/networkx/nx-parallel/issues/94) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| Incorrect passing of `num_in_chunk` as `n_jobs` in `chunks()` | [PR#110](https://github.com/networkx/nx-parallel/issues/110) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| set `n_jobs=-1` as default | [PR#111](https://github.com/networkx/nx-parallel/issues/111) | ![](assets/static/merged.png){width=100 fig-align="center"} |
+| set `should_run=False` unless `nodes` is `None` | [PR#110](https://github.com/networkx/nx-parallel/issues/137) | ![](assets/static/open.png){width=100 fig-align="center"} |

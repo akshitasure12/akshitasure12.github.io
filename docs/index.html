@@ -115,7 +115,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#abstract" id="toc-abstract" class="nav-link active" data-scroll-target="#abstract">Abstract</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a></li>
+  <li><a href="#prs-and-status" id="toc-prs-and-status" class="nav-link" data-scroll-target="#prs-and-status">PRs and status</a>
+  <ul class="collapse">
+  <li><a href="#prs-opened" id="toc-prs-opened" class="nav-link" data-scroll-target="#prs-opened">PRs opened</a></li>
+  <li><a href="#issues-raised" id="toc-issues-raised" class="nav-link" data-scroll-target="#issues-raised">Issues Raised</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -152,13 +158,184 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="./logo.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
+<p><img src="assets/static/logo.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
 </figure>
 </div>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<section id="abstract" class="level1">
+<h1>Abstract</h1>
+<p>This final report contains details of all of the work done during the Google Summer of Code, 2025, with respect to the nx-parallel project, a parallel backend for NetworkX that leverages joblib for running graph algorithms in parallel. I worked on switching the default Networkx configuration to use all of available cores instead of None which involved heavy documentation changes throughout. I added a timing script that utilises the <code>timeit</code> module and worked on nullifying the noise in the timings obtained. I refined the ASV benchmarks to use setup functions without including the graph creation and conversion timings. I added the <code>should_run</code> functionality which helps in determining whether a backend should run a particular algorithm. Coming to the main goal of the project, I added around 19 new embarassingly parallel algorithms to the codebase. I also revisited previously added algorithms and enhanced their performance.</p>
+<p>I hope to make sure that this report along with my published <a href="https://github.com/akshitasure12/networkx-blogs/tree/main/blogs">blogs</a> hope to serve as a key resource to help in contributions etcs.</p>
+</section>
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>The nx-parallel package is a backend for NetworkX designed to accelerate graph algorithms through parallel computing with joblib. Prior to the coding phase, I contributed by fixing a few utility functions, such as correcting the faulty <code>chunks()</code> function (which previously led to incorrect results due to improper passing of parameters) and refactoring <code>get_all_functions()</code>. I also proposed setting NetworkX’s default configuration to use all available cores instead of <code>None</code></p>
+</section>
+<section id="prs-and-status" class="level1">
+<h1>PRs and status</h1>
+<section id="prs-opened" class="level2">
+<h2 class="anchored" data-anchor-id="prs-opened">PRs opened</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">PR Description</th>
+<th style="text-align: center;">Link</th>
+<th style="text-align: right;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">parallel implementation of <code>triangles</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/106">PR#106</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">adding a custom marker to avoid <code>pytest.mark.order</code> warning</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/107">PR#107</a></td>
+<td style="text-align: right;"><img src="assets/static/closed.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">refactor <code>chunks()</code> to correctly use <code>n_jobs</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/112">PR#112</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">improve the timing script</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/114">PR#114</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">parallel implementation of <code>number_</code> algorithms</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/117">PR#117</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">modify <code>is_reachable()</code> to use mem-mapping approach</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/119">PR#119</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">optimise <code>is_reachable()</code> in NetworkX</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/networkx/pull/8112">PR#8112</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">remove test order dependency via context managers</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/120">PR#120</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">make <code>n_jobs=-1</code> as defualt</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/122">PR#122</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">add <code>should_run</code> functionality</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/123">PR#123</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">parallel implementation of <code>harmonic_centrality</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/124">PR#124</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">optimise harmonic centrality</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/networkx/pull/8158">PR#8158</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">refactor ASV benchmarks with setup functions</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/126">PR#126</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">parallel implementation of <code>link_prediction</code> algorithms</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/127">PR#127</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">refactor <code>test_get_functions_with_get_chunks</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/128">PR#128</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">update <code>test_get_chunks</code> for new algorithms</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/129">PR#129</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">parallel implementation of <code>clustering</code> and <code>average_clustering</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/130">PR#130</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">uses <code>pytest.raises</code> as context</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/networkx/pull/8170">PR#8170</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">parallel implementation of <code>average_neighbor_degree</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/132">PR#132</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">move <code>assign_algorithms</code> outside <code>BackendInterface</code> class</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/133">PR#133</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">parallel implementation of <code>v_structures</code> and <code>colliders</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/134">PR#134</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">simplify node selection using <code>nbunch_iter()</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/135">PR#135</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">post merge refinement</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/138">PR#138</a></td>
+<td style="text-align: right;"><img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">add <code>should_run</code> for when <code>nodes=None</code></td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/141">PR#141</a></td>
+<td style="text-align: right;"><img src="assets/static/open.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">clean up</td>
+<td style="text-align: center;"><a href="https://github.com/networkx/nx-parallel/pull/142">PR#142</a></td>
+<td style="text-align: right;"><img src="assets/static/open.png" class="img-fluid quarto-figure quarto-figure-center" width="100"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="issues-raised" class="level2">
+<h2 class="anchored" data-anchor-id="issues-raised">Issues Raised</h2>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 53%">
+<col style="width: 42%">
+<col style="width: 3%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Issue Description</th>
+<th style="text-align: center;">Link</th>
+<th style="text-align: right;">Status</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<div class="line-block">BUG: get_all_functions() is not returning args and kwargs of the functions | <a href="https://github.com/networkx/nx-parallel/issues/94">PR#94</a> | <img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"> |<br>
+Incorrect passing of <code>num_in_chunk</code> as <code>n_jobs</code> in <code>chunks()</code> | <a href="https://github.com/networkx/nx-parallel/issues/110">PR#110</a> | <img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"> |<br>
+set <code>n_jobs=-1</code> as default | <a href="https://github.com/networkx/nx-parallel/issues/111">PR#111</a> | <img src="assets/static/merged.png" class="img-fluid quarto-figure quarto-figure-center" width="100"> |<br>
+set <code>should_run=False</code> unless <code>nodes</code> is <code>None</code> | <a href="https://github.com/networkx/nx-parallel/issues/137">PR#110</a> | <img src="assets/static/open.png" class="img-fluid quarto-figure quarto-figure-center" width="100"> |</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
