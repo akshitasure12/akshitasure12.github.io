@@ -10,6 +10,8 @@ website:
       - icon: github
         text: Github
         href: https://github.com/akshitasure12
+  body-footer: |
+    © 2025 Akshita Sure
 
 format:
   html:

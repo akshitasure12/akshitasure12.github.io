@@ -1,9 +1,11 @@
 ---
 title: "Final Report"
+subtitle: "Adding embarassingly parallel algorithms to nx-parallel"
 author: "Akshita Sure"
-from: markdown+emoji
 categories: [gsoc]
 ---
+**Mentors: Dan Schult, Aditi Juneja** </br>
+**Timeline**: *May 2025 - August 2025*
 
 ![](assets/static/logo.png){width=400 fig-align="center"}
 
