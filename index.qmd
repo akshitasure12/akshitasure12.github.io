@@ -73,7 +73,7 @@ Introduced a `setup` function in each benchmark class to handle graph creation a
 
 # Work links
 
-GSoC blogs: https://github.com/akshitasure12/networkx-blogs/tree/main/blogs
+GSoC blogs: [https://github.com/akshitasure12/networkx-blogs/tree/main/blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs)
 
 ## PRs opened
 
@@ -109,7 +109,7 @@ The table below lists all the PRs I opened during the GSoC coding phase in both 
 
 ## Issues Raised
 
-The table below summarizes the key issues identified and addressed during the GSoC coding phase in both the `nx-parallel` and `NetworkX` repositories, along with their current status.
+The table below summarizes the key issues identified and addressed during the GSoC coding phase in both the nx-parallel and NetworkX repositories, along with their current status.
 
 | Issue Description                                                          | Link                                                         | Status|
 | :--------------------------------------------------------------------------| :----------------------------------------------------------: | ----: |
