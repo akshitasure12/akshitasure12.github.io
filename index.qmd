@@ -73,11 +73,13 @@ Introduced a `setup` function in each benchmark class to handle graph creation a
 
 # Work links
 
-My blogs: [Biweekly blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs)
+GSoC blogs: https://github.com/akshitasure12/networkx-blogs/tree/main/blogs
 
 ## PRs opened
 
-| PR Description                             | Link                                                         | Status|
+The table below lists all the PRs I opened during the GSoC coding phase in both the nx-parallel and NetworkX repositories, along with their merge status.
+
+| PR                     | Link                                                         | Status|
 | :------------------------------------------| :----------------------------------------------------------: | ----: |
 | parallel implementation of `triangles` | [PR#106](https://github.com/networkx/nx-parallel/pull/106) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | adding a custom marker to avoid `pytest.mark.order` warning | [PR#107](https://github.com/networkx/nx-parallel/pull/107) | ![](assets/static/closed.png){width=100 fig-align="center"} |
@@ -106,6 +108,8 @@ My blogs: [Biweekly blogs](https://github.com/akshitasure12/networkx-blogs/tree/
 | clean up | [PR#142](https://github.com/networkx/nx-parallel/pull/142) | ![](assets/static/open.png){width=100 fig-align="center"} |
 
 ## Issues Raised
+
+The table below summarizes the key issues identified and addressed during the GSoC coding phase in both the `nx-parallel` and `NetworkX` repositories, along with their current status.
 
 | Issue Description                                                          | Link                                                         | Status|
 | :--------------------------------------------------------------------------| :----------------------------------------------------------: | ----: |
