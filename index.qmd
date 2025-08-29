@@ -9,17 +9,17 @@ categories: [gsoc]
 
 # Abstract
 
-This final report contains details of all of the work done during the Google Summer of Code, 2025, with respect to the nx-parallel project, a parallel backend for NetworkX that leverages joblib for running graph algorithms in parallel. I worked on switching the default Networkx configuration to use all of available cores instead of None which involved heavy documentation changes throughout. I added a timing script that utilises the `timeit` module and worked on nullifying the noise in the timings obtained. I refined the ASV benchmarks to use setup functions without including the graph creation and conversion timings. I added the `should_run` functionality which helps in determining whether a backend should run a particular algorithm. Coming to the main goal of the project, I added around 19 new embarassingly parallel algorithms to the codebase. I also revisited previously added algorithms and enhanced their performance.
+This report summarizes my work during Google Summer of Code 2025 on the nx-parallel project, a parallel backend for NetworkX that leverages joblib to run parallel graph algorithms. My contributions included switching the default configuration to use all available cores, refining documentation, and developing a more reliable timing script to reduce measurement variability. I also improved ASV benchmarks by adding a setup function and introduced a `should_run` mechanism to decide when the parallel backend should be applied. Additionally, I implemented several embarrassingly parallel algorithms, analyzed their performance speedups, and revisited existing implementations to optimize them further.
 
-I hope to make sure that this report along with my published [blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs) hope to serve as a key resource to help in contributions etcs.
+For a more detailed discussion of the solution approaches, please refer to my [blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs).
 
 # Background
 
-The nx-parallel package is a backend for NetworkX designed to accelerate graph algorithms through parallel computing with joblib. Prior to the coding phase, I contributed by fixing a few utility functions, such as correcting the faulty `chunks()` function (which previously led to incorrect results due to improper passing of parameters) and refactoring `get_all_functions()`. I also proposed setting NetworkX’s default configuration to use all available cores instead of `None`
+nx-parallel is a backend for NetworkX that speeds up graph algorithms by running them in parallel with joblib. Before the coding phase, I spent time strengthening the project’s foundation. I fixed utility functions like `chunks`, which had been giving wrong results because of parameter handling issues, and refactored `get_all_functions` to make it more reliable. I also suggested changing the default configuration so that NetworkX uses all available cores (`n_jobs=-1`) instead of sticking with joblib’s default (`None`). These early fixes and adjustments set the stage for the larger developments that came during the coding phase.
 
 # Contributions
 
-## Adding Embarassingly parallel algorithms
+## Adding Embarassingly parallel algorithms 
 
 The primary objective of the project was to implement seven embarrassingly parallel algorithms. By the end of the coding phase, around nineteen such graph algorithms were added to nx-parallel:
 
@@ -37,18 +37,15 @@ The primary objective of the project was to implement seven embarrassingly paral
 
 ^1^ *A private parallel helper function that applies each internal prediction function used by the link prediction algorithms across multiple cores.*
 
-These algorithms gave me the opportunity to explore a variety of directions and challenges in parallel graph computation. In the process, I dug into several aspects of why certain algorithms exhibit significant speedups while others do not. For example, some algorithms scale well only on sparse graphs, while their performance gains diminish on denser graphs due to the cost of serializing graph data and distributing work to multiple processes. In other cases, the rate of speedup decreases as the number of nodes increases, since the overhead of chunking tasks, pickling/unpickling, and scheduling workers outweighs the benefits of parallel execution.
+Working with these algorithms gave me the chance to explore a wide range of challenges in parallel graph computation. Along the way, I gained insight into why some algorithms achieve significant speedups while others do not. For example, certain algorithms scale well on sparse graphs but lose their performance advantage on denser graphs due to the overhead of serializing graph data and distributing work across multiple processes. In other cases, speedup slows down as the number of nodes increases because the overhead of chunking tasks, pickling/unpickling, and scheduling workers grows.
 
-I also discovered implementation-specific constraints. For instance, returning generators inside the per-chunk function caused issues, as they cannot be pickled for process communication with worker processes. Similarly, tuning parameters such as `max_chunk_size` proved important—smaller chunks worked better for certain algorithms where fine-grained load balancing mattered, while larger chunks were more efficient for others by reducing scheduling overhead.
+I also encountered implementation-specific constraints. Returning generators from within per-chunk functions, for instance, caused issues since generators cannot be pickled for communication between worker processes. Similarly, tuning parameters like `max_chunk_size` proved crucial-- smaller chunks benefited algorithms needing fine-grained load balancing, while larger chunks improved efficiency by reducing scheduling overhead.
 
 These explorations not only deepened my understanding of parallel execution trade-offs in graph algorithms but also helped shape a set of practical guidelines for when and how parallelization in nx-parallel provides the most benefit.
 
 ## Improving the timing script (ref. [PR#114](https://github.com/networkx/nx-parallel/pull/114))
 
-The earlier timing script sometimes produced inconsistent results. For instance, it occasionally showed speedup decreasing as the number of nodes increased, or even reported lower speedups when more cores were used—behaviors that contradict the expected trends in parallel performance.
-
-To resolve this, I implemented a new timing script based on the timeit module. Each measurement is repeated several times, and the minimum runtime is recorded to reduce the impact of system noise. This produces results that are more stable and more representative of the true execution time.
-
+The earlier timing script produced inconsistent results, sometimes showing decreasing speedups with more nodes or cores. I replaced it with a timeit-based script that repeats measurements and records the minimum runtime, yielding more stable and accurate results.
 The impact of this change can be seen below:
 
 **Old heatmap**:
@@ -60,21 +57,15 @@ The impact of this change can be seen below:
 
 ## Adding a `should_run` parameter (ref. [PR#123](https://github.com/networkx/nx-parallel/pull/123))
 
-To give more control over when the parallel backend is used, a `should_run` parameter was introduced. Every algorithm is wrapped with a `default_should_run` function that checks the runtime configuration and decides whether the backend should be activated. By default, the backend is triggered only when the number of jobs utilised is greater than one, since running in parallel on a single core would not yield any benefit.
-
-Beyond this default, other policies have also been added to handle situations where parallel execution may not be advantageous. For instance, if the measured speedup is consistently below one, the backend can be skipped in favor of the sequential version. Similarly, when the input graph is very small, the overhead may outweigh any gains, so the algorithm is forced to run sequentially or when the graph is too dense to benefit from parallel processing.
-
-Depending on the situation, the appropriate `should_run` policy is selected and passed through the `should_run` parameter of the `_configure_if_nx_active` decorator. This design makes the backend more adaptable to different workloads and avoids wasting resources on scenarios where parallelism provides little or no benefit.
+A `should_run` parameter was added to control when the parallel backend is used. By default, it activates only when multiple jobs are available, avoiding parallel execution on a single core. Other policies handle cases where parallelism is ineffective-- for example, when speedup is consistently low, the graph is very small, or it’s too dense. The appropriate policy is passed via the `_configure_if_nx_active` decorator, making the backend adaptable and preventing wasted resources in scenarios where parallelism provides little or no benefit.
 
 ## Switching the default config to NetworkX (ref. [PR#122](https://github.com/networkx/nx-parallel/pull/122))
 
-Previously, nx-parallel relied on Joblib’s configuration, where the default setting (n_jobs=None) restricted execution to a single core unless explicitly changed by the user. This often required additional configuration steps before any parallel speedup could be observed. 
-
-The defaults have now been switched to use NetworkX’s configuration system instead. As part of this change, n_jobs is set to -1 by default, instructing Joblib to use all available cores automatically. This allows users to benefit from parallel execution out of the box, without needing to modify configuration settings. The documentation has been updated to reflect this change and ensure consistency with the new configuration system. Advanced users still retain the ability to override the defaults if they require finer control. 
+Previously, nx-parallel used Joblib’s default (`n_jobs=None`) and ran on a single core unless explicitly changed. I switched the defaults to NetworkX’s config and set `n_jobs = -1`, so the config system now uses all available cores automatically. Hence, the change required a thorough update of the documentation to ensure it accurately reflects the new configuration.
 
 ## Implement mem-mapping
 
-To reduce the memory overhead of passing large graphs between processes, I introduced [memmapping](https://joblib.readthedocs.io/en/latest/parallel.html#working-with-numerical-data-in-shared-memory-memmapping:~:text=shared%20memory%20(memmapping)-,%C2%B6,-By%20default%20the). The adjacency matrix is first converted to a NumPy array and dumped to disk with Joblib which allows all processes to share the same underlying file segment instead of creating separate in-memory copies. This significantly improves efficiency when working with large graphs. I applied it in `is_reachable` (ref. [PR#119](https://github.com/networkx/nx-parallel/pull/119)), but it can be extended to other algorithms as needed.
+To reduce the memory overhead of passing large graphs between processes, I introduced [memmapping](https://joblib.readthedocs.io/en/latest/parallel.html#working-with-numerical-data-in-shared-memory-memmapping:~:text=shared%20memory%20(memmapping)-,%C2%B6,-By%20default%20the) for algorithms where the adjacency matrix is first converted to a NumPy array and stored on disk using Joblib. This allows all processes to share the same underlying file segment instead of creating separate in-memory copies, significantly improving efficiency for large graphs. I applied this approach to `is_reachable` (ref. [PR#119](https://github.com/networkx/nx-parallel/pull/119)), but it can be extended to other algorithms as needed.
 
 ## Adding setup functions to benchmarks (ref. [PR#126](https://github.com/networkx/nx-parallel/pull/126))
 
@@ -125,26 +116,21 @@ My blogs: [Biweekly blogs](https://github.com/akshitasure12/networkx-blogs/tree/
 
 # Key Learnings and Challenges
 
-Looking back, I can see just how far I’ve come over the course of my GSoC journey. One of the biggest lessons I’ve learned is the true value of documentation—not just as a formality, but as a way to communicate ideas clearly and leave a trail of insights for others (and even for myself in the future). I’ve developed the habit of recording my findings as I go, and over time I’ve become more mindful of keeping things concise, relevant, and easy to follow.
+Reflecting on my GSoC experience, I’m amazed at how much I’ve grown over the course of the program. One of the biggest lessons I’ve learned is the true value of documentation—not just as a formality, but as a way to communicate ideas clearly and leave a record of insights for others (and even for myself in the future). I’ve developed the habit of recording my findings as I go, and over time, I’ve become more mindful about keeping things concise, relevant, and easy to follow.
 
-This experience also made me more curious by nature-- I now find myself constantly wondering why something works the way it does and digging deeper to understand it better. Along with that curiosity, I learned the importance of asking questions and not being afraid to seek clarification from mentors. Collaborating in an open-source setting also taught me how valuable community discussions are; they not only improved code quality but also broadened my perspective on different approaches to solving a particular problem.
+This journey has also made me naturally more curious. I now find myself constantly asking why something works the way it does and digging deeper to understand it. Alongside that curiosity, I’ve learned the importance of asking questions and seeking clarification from mentors without hesitation. Collaborating in an open-source community has shown me just how valuable discussions are—they not only improve the quality of code but also broaden your perspective on different ways to tackle a problem.
 
-I also learned the importance of testing and benchmarking-- identifying bottlenecks, and validating improvements in a systematic manner. Through this, I gained a stronger appreciation for writing maintainable code that others can build on, not just code that “works.”
-
-One of the main challenges I faced was maintaining a balance between staying focused on the defined tasks and resisting the temptation to dive too deeply into side explorations. It’s easy to get carried away chasing interesting rabbit holes, but I had to remind myself to stay grounded in the project’s goals while still leaving room for curiosity and experimentation. Finding that balance wasn’t always easy, but it taught me a lot about prioritization.
+One of the biggest challenges I faced was balancing focus on the defined tasks with the temptation to dive too deeply into side quests. It’s easy to get carried away chasing rabbit holes, but I had to remind myself to stay grounded in the project’s goals while still leaving room for curiosity and experimentation. Finding that balance wasn’t always easy, but it taught me a lot about prioritization and staying organized.
 
 # Conclusion
 
-The GSoC 2025 experience has truly been one of a kind. It has shaped me into a more well-rounded developer, going far beyond just “writing code.” I learned the importance of documentation, testing, benchmarking, collaboration, and community-driven development-- all of which are just as vital as code itself. In many ways, I feel I’ve experienced exactly what GSoC is intended to inspire: a genuine love for contributing to open source and a deeper appreciation for the impact of collective effort.
-
-When I look back at my original proposal, my plan was to implement 7 parallel graph algorithms. By the end of the summer, however, not only did I added those many algorithms but also worked across many other aspects of the project. This growth was possible because I became increasingly comfortable with the codebase, and with that came the confidence to explore, experiment, and contribute in new directions.
-
-Looking ahead, I plan to continue being an active part of the NetworkX and nx-parallel communities. I want to keep fixing bugs, improving features, and helping with new ideas that push the project forward. More importantly, I look forward to continuing the habit of learning, sharing knowledge, and contributing back to open source-- because this journey has shown me that the real reward lies in building together.
+The GSoC 2025 experience has truly been one of a kind. It helped me grow into a more well-rounded developer, going far beyond just “writing code.” Compared to my original proposal, by the end of the summer I had contributed to many more aspects of the project than initially planned. This growth came from becoming increasingly comfortable with the codebase, which gave me the confidence to explore, experiment, and take initiative in new directions. Compared to my original proposal, by the end of the summer I had contributed to many more aspects of the project than initially planned. This growth came from becoming increasingly comfortable with the codebase, which gave me the confidence to explore, experiment, and take initiative in new directions. 
+Looking ahead, I plan to remain an active member of the NetworkX and nx-parallel communities— improving features, and contributing new ideas to advance the project. More importantly, I look forward to continuing the habit of learning, and giving back to the open source community.
 
 # Achnowledgements
 
-I would like to sincerely thank my mentors, Dan Schult and Aditi Juneja, for their invaluable guidance and support throughout my GSoC journey. Their thoughtful reviews not only helped me refine my work but also encouraged me to pay attention to the smallest details. The mid-term review was especially insightful, as it helped me recognize my strengths while also highlighting areas for growth—motivating me to continually improve.
+I would like to sincerely thank my mentors, Dan Schult and Aditi Juneja, for their invaluable guidance and support throughout my GSoC journey. Their thoughtful reviews not only helped me refine my work but also encouraged me to pay close attention to even the smallest details. The mid-term review, in particular, was especially insightful, helping me recognize my strengths while highlighting areas for growth and motivating me to continually improve.
 
-I am deeply grateful for their time, patience, and encouragement. I would also like to thank Google Summer of Code for giving me the opportunity to contribute to such an inspiring open-source community and to learn in such a collaborative environment.
+I am deeply grateful for their time, patience, and encouragement. I would also like to thank Google Summer of Code for providing me the opportunity to contribute to such an inspiring open-source community and to learn in a collaborative and supportive environment.
 
 
