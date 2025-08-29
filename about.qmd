@@ -14,3 +14,5 @@ about:
       text: Medium
       href: https://medium/@akshitasure/
 ---
+
+All GSoC work, including daily updates and blog posts, can be found at [https://github.com/akshitasure12/networkx-blogs](https://github.com/akshitasure12/networkx-blogs)!

@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Akshita Sure",
+    "section": "",
+    "text": "All GSoC work, including daily updates and blog posts, can be found at https://github.com/akshitasure12/networkx-blogs!"
+  },
+  {
     "objectID": "index.html#adding-embarassingly-parallel-algorithms",
     "href": "index.html#adding-embarassingly-parallel-algorithms",
     "title": "Final Report",
