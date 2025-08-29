@@ -11,9 +11,9 @@ categories: [gsoc]
 
 # Abstract
 
-This report summarizes my work during Google Summer of Code 2025 on the nx-parallel project, a parallel backend for NetworkX that leverages joblib to run parallel graph algorithms. My contributions included switching the default configuration to use all available cores, refining documentation, and developing a more reliable timing script to reduce measurement variability. I also improved ASV benchmarks by adding a setup function and introduced a `should_run` mechanism to decide when the parallel backend should be applied. Additionally, I implemented several embarrassingly parallel algorithms, analyzed their performance speedups, and revisited existing implementations to optimize them further.
+This report summarizes my work during Google Summer of Code 2025 on the nx-parallel project, a parallel backend for NetworkX that leverages joblib to run parallel graph algorithms. My primary contribution was implementing several embarrassingly parallel algorithms, analyzing their performance speedups, and optimizing existing implementations. Additionally, I switched the default configuration system to NetworkX and enabled all available cores (`n_jobs=-1`). I also developed a more reliable timing script to reduce measurement variability, introduced a `should_run` mechanism to determine when the parallel backend should be applied, and enhanced ASV benchmarks by adding a setup function.
 
-For a more detailed discussion of the solution approaches, please refer to my [blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs).
+For a more detailed discussion of the work done, please refer to my [blogs](https://github.com/akshitasure12/networkx-blogs/tree/main/blogs).
 
 # Background
 
