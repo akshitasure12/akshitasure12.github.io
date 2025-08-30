@@ -5,7 +5,7 @@ author: "Akshita Sure"
 categories: [gsoc]
 ---
 **Mentors: Dan Schult, Aditi Juneja** </br>
-**Timeline**: *May 2025 - August 2025*
+**Duration**: *May 2025 - August 2025*
 
 ![](assets/static/logo.png){width=400 fig-align="center"}
 
@@ -113,7 +113,7 @@ The table below lists all the PRs I opened during the GSoC coding phase in both 
 
 The table below summarizes the key issues identified and addressed during the GSoC coding phase in both the nx-parallel and NetworkX repositories, along with their current status.
 
-| Issue Description                                                          | Link                                                         | Status|
+| Issue                                                          | Link                                                         | Status|
 | :--------------------------------------------------------------------------| :----------------------------------------------------------: | ----: |
 | `get_all_functions()` is not returning args and kwargs of the functions | [PR#94](https://github.com/networkx/nx-parallel/issues/94) | ![](assets/static/merged.png){width=100 fig-align="center"} |
 | Incorrect passing of `num_in_chunk` as `n_jobs` in `chunks()` | [PR#110](https://github.com/networkx/nx-parallel/issues/110) | ![](assets/static/merged.png){width=100 fig-align="center"} |
