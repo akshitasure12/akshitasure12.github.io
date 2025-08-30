@@ -32,7 +32,7 @@
     "href": "index.html#adding-a-should_run-parameter-ref.-pr123",
     "title": "Final Report",
     "section": "Adding a should_run parameter (ref. PR#123)",
-    "text": "Adding a should_run parameter (ref. PR#123)\nA should_run parameter was added to control when the parallel backend is used. By default, it activates only when multiple jobs are available, avoiding parallel execution on a single core. Other policies handle cases where parallelism is ineffective– for example, when speedup is consistently low, the graph is very small, or it’s too dense. The appropriate policy is passed via the _configure_if_nx_active decorator, making the backend adaptable and preventing wasted resources in scenarios where parallelism provides little or no benefit."
+    "text": "Adding a should_run parameter (ref. PR#123)\nA should_run parameter has been added to control when the parallel backend is used. The default should_run policy ensures that an algorithm is executed only if it runs across multiple cores (i.e., when the number of jobs used is greater than one). Alternative should_run policies handle cases where parallelism is ineffective– for example, when speedup is consistently low, the graph is very small, or it’s too dense. The appropriate policy is passed via the _configure_if_nx_active decorator, making the backend adaptable and preventing wasted resources in scenarios where parallelism provides little or no benefit."
   },
   {
     "objectID": "index.html#switching-the-default-config-to-networkx-ref.-pr122",
