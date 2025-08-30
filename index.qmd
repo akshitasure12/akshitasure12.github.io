@@ -59,7 +59,7 @@ The impact of this change can be seen below:
 
 ## Adding a `should_run` parameter (ref. [PR#123](https://github.com/networkx/nx-parallel/pull/123))
 
-A `should_run` parameter was added to control when the parallel backend is used. By default, it activates only when multiple jobs are available, avoiding parallel execution on a single core. Other policies handle cases where parallelism is ineffective-- for example, when speedup is consistently low, the graph is very small, or it’s too dense. The appropriate policy is passed via the `_configure_if_nx_active` decorator, making the backend adaptable and preventing wasted resources in scenarios where parallelism provides little or no benefit.
+A `should_run` parameter has been added to control when the parallel backend is used. The default `should_run` policy ensures that an algorithm is executed only if it runs across multiple cores (i.e., when the number of jobs used is greater than one). Alternative `should_run` policies handle cases where parallelism is ineffective-- for example, when speedup is consistently low, the graph is very small, or it’s too dense. The appropriate policy is passed via the `_configure_if_nx_active` decorator, making the backend adaptable and preventing wasted resources in scenarios where parallelism provides little or no benefit.
 
 ## Switching the default config to NetworkX (ref. [PR#122](https://github.com/networkx/nx-parallel/pull/122))
 
@@ -130,8 +130,7 @@ One of the biggest challenges I faced was balancing focus on the defined tasks w
 
 # Conclusion
 
-The GSoC 2025 experience has truly been one of a kind. It helped me grow into a more well-rounded developer, going far beyond just “writing code.” Compared to my original proposal, by the end of the summer I had contributed to many more aspects of the project than initially planned. This growth came from becoming increasingly comfortable with the codebase, which gave me the confidence to explore, experiment, and take initiative in new directions. Compared to my original proposal, by the end of the summer I had contributed to many more aspects of the project than initially planned. This growth came from becoming increasingly comfortable with the codebase, which gave me the confidence to explore, experiment, and take initiative in new directions. 
-Looking ahead, I plan to remain an active member of the NetworkX and nx-parallel communities— improving features, and contributing new ideas to advance the project. More importantly, I look forward to continuing the habit of learning, and giving back to the open source community.
+The GSoC 2025 experience has truly been one of a kind. It helped me grow into a more well-rounded developer, going far beyond just “writing code.” Compared to my original proposal, by the end of the summer I had contributed to many more aspects of the project than initially planned. This growth came from becoming increasingly comfortable with the codebase, which gave me the confidence to explore, experiment, and take initiative in new directions. Looking ahead, I plan to remain an active member of the NetworkX and nx-parallel communities— improving features, and contributing new ideas to advance the project. More importantly, I look forward to continuing the habit of learning, and giving back to the open source community.
 
 # Achnowledgements
 
